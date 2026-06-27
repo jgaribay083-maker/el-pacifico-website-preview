@@ -92,18 +92,29 @@ img {
 
 .header-cta,
 .btn {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
   font-weight: 900;
+  isolation: isolate;
+  text-shadow: 0 1px 0 rgb(255 255 255 / 0.18);
 }
 
 .header-cta {
   min-height: 44px;
   padding: 10px 18px;
   color: white;
-  background: var(--deep);
+  border: 1px solid rgb(255 255 255 / 0.24);
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.42) 0%, rgb(255 255 255 / 0.08) 42%, rgb(0 0 0 / 0.22) 100%),
+    linear-gradient(135deg, #157487, var(--deep));
+  box-shadow:
+    inset 0 2px 0 rgb(255 255 255 / 0.48),
+    inset 0 -14px 22px rgb(0 0 0 / 0.22),
+    0 10px 24px rgb(6 31 37 / 0.20);
 }
 
 main,
@@ -212,17 +223,50 @@ h2 {
 .btn {
   min-height: 52px;
   padding: 14px 20px;
-  transition: transform 220ms var(--ease), background 220ms var(--ease);
+  box-shadow:
+    inset 0 2px 0 rgb(255 255 255 / 0.72),
+    inset 0 -16px 24px rgb(6 31 37 / 0.18),
+    0 12px 24px rgb(6 31 37 / 0.18);
+  transition: transform 220ms var(--ease), filter 220ms var(--ease);
+}
+
+.btn::before,
+.header-cta::before {
+  content: "";
+  position: absolute;
+  inset: 3px 9px auto;
+  height: 38%;
+  z-index: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.72), rgb(255 255 255 / 0.12));
+  pointer-events: none;
+}
+
+.btn::after,
+.header-cta::after {
+  content: "";
+  position: absolute;
+  inset: -65% auto -65% -58%;
+  z-index: 1;
+  width: 42%;
+  transform: skewX(-18deg);
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.95), transparent);
+  animation: button-glint 5.8s var(--ease) infinite;
+  pointer-events: none;
 }
 
 .btn.primary {
   color: var(--deep);
-  background: var(--lime);
+  border: 1px solid rgb(6 31 37 / 0.18);
+  background:
+    linear-gradient(180deg, #f6ffc9 0%, var(--lime) 46%, #99cf08 100%);
 }
 
 .btn.secondary {
   color: var(--deep);
-  background: white;
+  border: 1px solid rgb(6 31 37 / 0.16);
+  background:
+    linear-gradient(180deg, #ffffff 0%, #f5fffc 46%, #cfe8e4 100%);
 }
 
 .scroll-note {
@@ -247,6 +291,8 @@ h2 {
 }
 
 .quick-actions a {
+  position: relative;
+  overflow: hidden;
   min-height: 118px;
   padding: 18px;
   display: flex;
@@ -255,7 +301,44 @@ h2 {
   border-radius: 16px;
   color: white;
   background: var(--deep);
+  isolation: isolate;
+  box-shadow: none;
   transition: transform 220ms var(--ease), background 220ms var(--ease);
+}
+
+.quick-actions a::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -55%;
+  z-index: 1;
+  width: 42%;
+  transform: skewX(-20deg);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(255 255 255 / 0.12),
+    rgb(255 255 255 / 0.68),
+    rgb(255 255 255 / 0.12),
+    transparent
+  );
+  animation: card-shine-line 4.8s var(--ease) infinite;
+  pointer-events: none;
+}
+
+.quick-actions a:nth-child(2)::before {
+  animation-delay: 0.7s;
+}
+
+.quick-actions a:nth-child(3)::before {
+  animation-delay: 1.4s;
+}
+
+.quick-actions strong,
+.quick-actions span {
+  position: relative;
+  z-index: 2;
 }
 
 .quick-actions a:nth-child(2) {
@@ -293,7 +376,7 @@ h2 {
   width: max-content;
   display: flex;
   gap: 26px;
-  animation: ticker 62s linear infinite;
+  animation: ticker 220s linear infinite;
 }
 
 .ticker span {
@@ -525,6 +608,29 @@ footer div {
   .quick-actions a:hover {
     transform: translateY(-3px);
   }
+
+  .btn:hover,
+  .header-cta:hover {
+    filter: saturate(1.08) contrast(1.03);
+  }
+}
+
+@keyframes button-glint {
+  0%, 62% {
+    transform: translateX(0) skewX(-18deg);
+  }
+  86%, 100% {
+    transform: translateX(520%) skewX(-18deg);
+  }
+}
+
+@keyframes card-shine-line {
+  0%, 48% {
+    left: -55%;
+  }
+  78%, 100% {
+    left: 118%;
+  }
 }
 
 @keyframes ticker {
@@ -553,6 +659,10 @@ footer div {
   .quick-actions {
     grid-template-columns: 1fr;
     margin-top: 12px;
+  }
+
+  .ticker div {
+    animation-duration: 62s;
   }
 
   .menu-section {
